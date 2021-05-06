@@ -9,6 +9,7 @@ except ImportError:
 import base64
 import hashlib
 import hmac
+import uuid
 
 
 #location of the api (change to https://beta-api.itbit.com/v1 for beta endpoint)
@@ -37,7 +38,7 @@ class itBitApiConnection(object):
         self.clientKey = clientKey
         self.secret = secret.encode('utf-8')
         self.userId = userId
-        self.nonce = 0
+        self.nonce = str(uuid.uuid4())
 
     #returns ticker information for a specific ticker symbol
     def get_ticker(self, tickerSymbol):
@@ -162,8 +163,7 @@ class itBitApiConnection(object):
 
     #increases nonce so each request will have a unique nonce
     def _get_next_nonce(self):
-        self.nonce += 1
-        return self.nonce
+        return str(uuid.uuid4())
 
     #timestamp must be unix time in milliseconds
     def _get_timestamp(self):
